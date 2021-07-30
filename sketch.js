@@ -1,6 +1,6 @@
 var ball;
 var groundObj;
-var leftSide
+var leftSide,RightSide
 
 
 const Engine = Matter.Engine;
@@ -14,45 +14,58 @@ function preload()
 }
 
 function setup() {
-	createCanvas(800, 700);
-var ball_options={
-	isStatic:false,
-	restitution:0.3,
-	friction:0,
-	density:1.2
-
-}
-
+	createCanvas(800, 300);
 	engine = Engine.create();
 	world = engine.world;
+var ball_options={
+	restitution:0.8,
+	
 
-	groundObj=new Ground(width/2,670,width,20)
-	leftSide=new Ground(1100,600,20,120)
+}
+var ground_options={
+	isStatic:true
+	
+}
+ground=Bodies.rectangle(400,250,800,10,ground_options)
+World.add(world,ground)
+
+leftSide=Bodies.rectangle(500,200,10,100,ground_options)
+World.add(world,leftSide)
+
+RightSide=Bodies.rectangle(650,200,10,100,ground_options)
+World.add(world,RightSide)
+	
+
+	
 
 	//Create the Bodies Here.
 	ball=Bodies.circle(200,100,20,ball_options)
 	World.add(world,ball)
 
-	Engine.run(engine);
-  
+	ellipseMode(RADIUS)
+	rectMode(CENTER);
 }
 
 
 function draw() {
-  rectMode(CENTER);
+ 
   background(0);
-  groundObj.display()
-  leftSide.display()
+  Engine.update(engine)
+  ellipse(ball.position.x,ball.position.y,10)
+  rect(ground.position.x,ground.position.y,800,10)
+  rect(leftSide.position.x,leftSide.position.y,10,100)
+  rect(RightSide.position.x,RightSide.position.y,10,100)
   
-  drawSprites();
+  
+  
  
 }
 
 
 
 function keyPressed(){
-	if(keyCode==Up_Arrow) {
-		Matter.Body.applyForce(ball,{x:0,y:0},{x:0,y:-0.05})
+	if(keyCode==UP_ARROW) {
+		Matter.Body.applyForce(ball,{x:0,y:0},{x:0.05,y:-0.05})
 	}
 }
 
